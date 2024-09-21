@@ -1,0 +1,18 @@
+services:
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.15.1
+    container_name: filebeat
+    # user: root
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro  # Filebeat config file
+      - /home/harry/dev/playlogstash/storage/logs:/usr/share/filebeat/ingest_data/playlogstash:ro
+      # - /var/run/docker.sock:/var/run/docker.sock:ro
+      # - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    network_mode: host
+    environment:
+      ELASTIC_USER: ${ELASTIC_USER}
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+      ELASTIC_HOSTS: ${ELASTIC_HOSTS}
+      KIBANA_HOSTS: ${KIBANA_HOSTS}
+      LOGSTASH_HOSTS: ${LOGSTASH_HOSTS}
+    restart: always
